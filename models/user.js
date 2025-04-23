@@ -18,7 +18,7 @@ const UserSchema = Schema({
         required: true
     },
 
-    online: {
+    isOnline: {
         type: Boolean,
         default: false
     }
