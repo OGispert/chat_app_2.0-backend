@@ -5,12 +5,12 @@ const { generateToken } = require('./jwt');
 
 const createUser = async (req, res = response) => {
 
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     try {
-        const emailExists = await User.findOne({ email });
+        const userExists = await User.findOne({ username });
 
-        if (emailExists) {
+        if (userExists) {
             return res.status(400).json({
                 ok: false,
                 msj: 'Email is not valid.'
@@ -45,11 +45,11 @@ const createUser = async (req, res = response) => {
 
 const login = async (req, res = response) => {
 
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     try {
         // Validate user in db
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ username });
 
         if (!user) {
             return res.status(404).json({
