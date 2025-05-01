@@ -1,6 +1,6 @@
 const { validateJWT } = require('../controllers/jwt');
 const { io } = require('../index');
-const { connectedUser, disconnectedUser } = require('../controllers/sockets')
+const { connectedUser, disconnectedUser, saveMessage } = require('../controllers/sockets')
 
 // Sockets
 io.on('connection', client => {
@@ -12,6 +12,13 @@ io.on('connection', client => {
 
     connectedUser(uid);
     console.log('Client connected');
+
+    client.join(uid);
+
+    client.on('private-message', async (payload) => {
+        await saveMessage(payload);
+        io.to(payload.to).emit('private-message', payload);
+    });
 
     client.on('disconnect', () => {
         disconnectedUser(uid);
